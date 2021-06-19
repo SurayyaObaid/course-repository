@@ -17,6 +17,7 @@ while ($row= mysqli_fetch_assoc($query_run)) {
 	$courseID = $row['course_ID'];
     $code = $row['course_Code'];
     $title = $row['course_Title'];
+    $finaloutlinestring = $row['course_Outline'];
     $credit = $row['creadit_Hours'];
     $books = $row['recommended_Books'];
     $clostring = $row['course_LOs'];
@@ -44,7 +45,7 @@ while ($row= mysqli_fetch_assoc($query_run)) {
 
     */
 
-	  $outlinestring = $row['course_Outline'];
+	  $outlinestring = $row['course_Objectives'];
     $lengthout = strlen($outlinestring);
     $outarray = explode("%", $outlinestring);	
 
@@ -53,8 +54,8 @@ while ($row= mysqli_fetch_assoc($query_run)) {
     $prereqs = $row['pre-requisites'];
     $nceac = $row['NCEAC Doc'];
 ?>
-
-<hr class="m-4" style="width: 90%; margin-top: 100px;">
+<body style="justify-content: center; padding-left: 80px; margin-top: 10px;">
+<hr class="m-4" style="width: 90%; margin-top: 100px; align-content: center; ">
   <div class="container col-lg-11 m-3 ml-4">
 
     <h3>Course Information</h3>
@@ -72,6 +73,9 @@ while ($row= mysqli_fetch_assoc($query_run)) {
 <tr>
     <td style="width: 15%;">Recommended Books</td>
     <td><?php echo $books; ?></td></tr>
+<tr>
+    <td style="width: 15%;">Course Outline</td>
+    <td><?php echo $finaloutlinestring; ?></td></tr>    
   <tr>
     <td style="width: 10%;">Weekly Breakup (Theory)</td>
     <td><a href="downloadtheory.php?course_ID=<?php echo $code; ?>"><?php echo $weeklytheory; ?></a></td></tr>

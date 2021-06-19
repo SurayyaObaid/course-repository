@@ -1,6 +1,6 @@
  <?php
 //pattern="\(?(\w{3})\)?+[-]+(\d{4})"  for email (\w\.?)+@[\w\.-]+\.\w{2,4}
-//include 'header.php';
+include 'header.php';
 include 'config.php';
 session_start();
 if($_SESSION['user']==""){
@@ -103,12 +103,12 @@ if(isset($_POST['add_course'])){
     
     <div class="input-group">
       <label>Course Code</label>
-      <input name="code" placeholder="XXX 0000s" type="text" pattern="(?(\w{3})\)?+[ ]+(\d{4})" maxlength="8"required="required">
+      <input name="code" placeholder="XXX 0000" type="text" pattern="(?(\w{3})\)?+[ ]+(\d{4})" maxlength="8"required="required">
     </div>
     <div class="input-group">
       <label>Course Title</label>
       <input name="title" type="text" required="required">
-    </div>
+    </div> 
     <!--<div class="input-group">
       <label>Credit Hours</label>
       <input type="text" name="credit" required="required">

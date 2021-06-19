@@ -65,6 +65,7 @@ if(isset($_POST['add_course'])){
       $c = $_POST['outline3'];
       $d = $_POST['outline4'];
       $e = $_POST['outline5'];
+      $outlinetext = $_POST['outlinetext'];
       $objarray  = array($a, $b, $c, $d, $e );
       $obj ='1. '. $objarray[0].'%'. '2. ' . $objarray[1].'%'. '3. '. $objarray[2].'%'.'4. '. $objarray[3].'%'.'5. '. $objarray[4];
       //echo $obj;
@@ -124,7 +125,7 @@ if(isset($_POST['add_course'])){
               */
               
               $insert = "update `course` set 
-              `course_Code` =' $code',
+              `course_Code` ='$code',
               `course_Title`= '$title', 
               `course_Outline` ='$courseactualoutline', 
               `course_LOs` ='$clo', 
@@ -134,18 +135,18 @@ if(isset($_POST['add_course'])){
               `weekly_Breakup_lab` ='$lwb_new', 
               `pre-requisites` ='$prereqs', 
               `NCEAC Doc` ='$nceac_new', 
-              `added_By`  ='$user'
-              `course_Objectives` = '$obj';
+              `added_By`  ='$user',
+              `course_Objectives` = '$obj'
               where `Course_ID`= '".$courseID."'";
              // $insert = "update `course` set `course_Title` = '$title' where Course_ID ='".$courseID."'";
              $execute  = mysqli_query($mysqli, $insert);
-              echo $insert;
+              //echo $insert;
 
               if ($execute) {
                   move_uploaded_file($_FILES['wb_theory']['tmp_name'], "resources/".$twb_new);
                   move_uploaded_file($_FILES['wb_lab']['tmp_name'], "resources/".$lwb_new);
                   move_uploaded_file($_FILES['nceac_doc']['tmp_name'], "resources/".$nceac_new);
-                  echo "<script>alert('Image Uploaded')</script>";
+                  echo "<script>alert('Record updated')</script>";
                 }
                 else{
                   echo mysqli_error($mysqli)  ;
@@ -198,9 +199,10 @@ if(isset($_POST['add_course'])){
       <label>Recommended Books</label>
       <input type="text" class ="h-25" name="books" required="required" value="<?php echo $books; ?>">
     </div>
-    <div class="input-group h-75">
+
+    <div class="input-group">
       <label>Outline</label>
-      <input type="text" class ="h-25" name="books" required="required" value="<?php echo $; ?>">
+      <input type="text" style="height: 100px;" name="outlinetext" required="required" value="<?php echo $courseactualoutline; ?>">
     </div>
     <div class="input-group">
       <label>Weekly Breakup (Theory)</label><br><br>
