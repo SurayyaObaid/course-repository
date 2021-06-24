@@ -21,8 +21,7 @@ if(isset($_POST['login_user'])){
         $numOfRows = mysqli_num_rows($result);
         if($numOfRows > 0){
             while ($row= mysqli_fetch_array($result)) {
-                $enpass = md5($password);
-            if($username== $row['user_Name'] && $enpass==$row['password']){
+            if($username== $row['user_Name'] && $password==$row['password']){
             echo $row['user_Name'];
             echo $row['Password'];
             echo "there you go!";
@@ -30,11 +29,21 @@ if(isset($_POST['login_user'])){
             $_SESSION['user'] = $row['user_Name'];
             $_SESSION['teacherid'] = $row['teacher_ID'];
             $_SESSION['tname'] = $row['user_Name'];
+            if ($row['teacher_Designation'] == "Lab Instructor" || $row['teacher_Designation'] == "Professor" || $row['teacher_Designation'] == "Lecturer" || $row['teacher_Designation'] == "Assistant Professor") {
+              # code...
+              header('location:facultyhome.php');
+            }
+            else{
             header('location:adminhome.php');
         
+}
+            }
+            elseif ($username != $row['user_Name'] || $password != $row['password']) {
+              # code...
+              echo "<center>Incorrect Credentials. Please try again</<center>";
+            }
+            }
 
-            }
-            }
         }
         else{
             echo "<center>No record found. Please Register</<center>";
@@ -52,7 +61,7 @@ if(isset($_POST['login_user'])){
   <link rel="stylesheet" type="text/css" href="css/register.css">
 </head>
 <body style="margin-top:100px;">
-  <div class="header bg-dark" style="margin-top: 200px;">
+  <div class="header bg-dark" style="margin-top: 100px;">
     <h2>Login</h2>
   </div>
    

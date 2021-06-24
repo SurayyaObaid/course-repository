@@ -2,13 +2,8 @@
 include 'header.php';
 include 'config.php';
 session_start();
-if($_SESSION['user']==""){
-echo "<script type='text/javascript'> 
- alert('Please login to for to complete this process'); 
- </script>";"";
- header('location:userlogin.php');
-}
-$courses = "select * from course";
+
+$courses = "select * from course where status = 0";
 $executec  = mysqli_query($mysqli, $courses);
 
 $sessions = "select * from session";
@@ -21,14 +16,8 @@ $teacher = "select * from teacher";
 $executet  = mysqli_query($mysqli, $teacher);
 $program = "";
 $year = "";
-
-
-$servername = "localhost";
-$user ="root";
-$pass = "";
-$dbname = "course-repository";
-$mysqli = new mysqli($servername, $user, $pass, $dbname);
-
+$courseID="";
+$code="";
 ?>
 
 
@@ -40,20 +29,22 @@ $mysqli = new mysqli($servername, $user, $pass, $dbname);
 </head>
 <body style="margin-top:20px;">
 
-  <div class="header w-50 bg-dark" style="margin-top: 100px;">
+  <div class="header w-50 bg-dark justify-content-center" style="margin-top: 100px;">
     <h2 >Course Enrollment</h2>
   </div>
    
-  <form method="post" class="w-50" enctype="multipart/form-data" action="course_enrolment.php">
+  <form method="post" class="w-50 justify-content-center" enctype="multipart/form-data" action="course_enrolment.php">
+    <center>
     
     <div class="input-group">
-      <label>Select Course Title</label><br>
+      <label>Select Course Title</label><br><br>
       <select class="bg-light border border-dark col-lg-11 rounded" required="required" name="selected-course">
-         <option>Select Course</option>
+         <option></option>
         <?php 
         if ($executec) {
           while ($row = mysqli_fetch_array($executec)) {
             $courseTitle = $row['course_Title'];
+            $code = $row['course_Code'];
             echo "<option>$courseTitle<br></option>";
           }
         }
@@ -66,7 +57,7 @@ $mysqli = new mysqli($servername, $user, $pass, $dbname);
       <label>Select Batch</label>
      </div>
       <select class="bg-light border border-dark col-lg-11 rounded" required="required" name="selected-batch">
-         <option>Select Batch</option>
+         <option></option>
         <?php 
         if ($executeb) {
           while ($row = mysqli_fetch_array($executeb)) {
@@ -80,11 +71,11 @@ $mysqli = new mysqli($servername, $user, $pass, $dbname);
        
       </select>
       
-    </div>
+    </div><br>
     <div class="input-group">
-      <label>Select Teacher</label><br>
+      <label>Select Teacher</label><br><br>
       <select class="bg-light border border-dark col-lg-11 rounded" required="required" name="selected-teacher">
-         <option>Select Teacher</option>
+         <option></option>
         <?php 
         if ($executec) {
           while ($row = mysqli_fetch_array($executet)) {
@@ -95,20 +86,17 @@ $mysqli = new mysqli($servername, $user, $pass, $dbname);
          ?>
        
       </select>
-    </div>
+      
     
-     
-
-     <div class="input-group justify-content-center">
-      <input type="submit" class="btn btn-dark bg-dark mt-4 pl-n4" name="enrol_course" value="Enrol Course" style= "margin-left:-45px;">
-    </div>  
-  </div>
 
 <?php
 if(isset($_POST['enrol_course'])){
     $scourse = $_POST['selected-course'];
     $steacher = $_POST['selected-teacher'];
     $sbatch = $_POST['selected-batch'];
+    if ($scourse == "" || $steacher == "" || $sbatch =="") {
+      echo "Incomplete information!";
+    }
     
     $fetchFaculty = "select * from teacher where user_Name ='".$steacher."'";
     $executeft  = mysqli_query($mysqli, $fetchFaculty);
@@ -135,12 +123,30 @@ if(isset($_POST['enrol_course'])){
             //echo "batch ID: ".$batchID;
           }}
     
-    
+  ?>
+
+
+  <?php  
     
 $insert = "insert into `teacher-course` ( `teacher_ID`, `course_ID`, `batch`, `session_ID`) VALUES ('$teacherID', '$courseID', '$batchID', '6')";
 $execute  = mysqli_query($mysqli, $insert);
- header('location:facultyhome.php');
+echo "string ".$insert;
+$updatecourse = "update course set status = 1 where course_ID = '".$courseID."'";
+$executeuc = mysqli_query($mysqli, $updatecourse);
+$folder_name=$scourse;
+            if (!file_exists($output_dir.$folder_name))/* Check folder exists or not */
+      {
+        @mkdir($output_dir.$folder_name, 0777);/* Create folder by using mkdir function */
+              echo "Folder Created";/* Success Message */
+      }
 }
 ?>
+
+<div class="input-group justify-content-center">
+      <a class="btn btn-dark bg-dark" href="edit-assigned-course.php?course_Code=<?php echo $code; ?>">
+      <input type="submit" class="bg-dark " name="enrol_course" value="Enrol Course" ></a>
+    </div>  
+  </div>
+    </div>
 </body>
 </html> 

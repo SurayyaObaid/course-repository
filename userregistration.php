@@ -6,7 +6,7 @@
   <link rel="stylesheet" type="text/css" href="css/register.css">
 <?php
 include 'header.php';
-
+$name = "";
 if(isset($_POST['reg_user'])){
     $error = NULL;
     $usercount = 0;
@@ -57,10 +57,16 @@ if(isset($_POST['reg_user'])){
         $password = $mysqli->real_escape_string($password);
         $cpassword = $mysqli->real_escape_string($cpassword);
         $vkey = md5(time().$username);
-        $password = md5($password);
         
         $insert = $mysqli->query("INSERT INTO teacher (User_name, password, teacher_Designation) values ('$username','$password', '$designation')");
         if($insert){
+          $folder_name=$name;
+            if (!file_exists($output_dir . $folder_name))/* Check folder exists or not */
+      {
+        @mkdir($output_dir . $folder_name, 0777);/* Create folder by using mkdir function */
+              echo "Folder Created";/* Success Message */
+             
+      }
            header('location:userlogin.php');
            
         }
@@ -76,7 +82,7 @@ if(isset($_POST['reg_user'])){
   <title>Registration system PHP and MySQL</title>
   <!--<link rel="stylesheet" type="text/css" href="css/register.css">-->
 </head>
-<body style="margin-top: 200px">
+<body style="margin-top: 100px">
   <div class="header bg-dark">
   	<h2>Register</h2>
   </div>
@@ -99,6 +105,7 @@ if(isset($_POST['reg_user'])){
       <label>Designation</label>
      </div>
       <select class="bg-light border border-dark col-lg-11 p4 mb-4 rounded" name="designation" id="designation">
+        
         <option value="Professor">Professor</option>
         <option value="Assistant Professor">Assistant Professor</option>
         <option value="Lecturer">Lecturer</option>

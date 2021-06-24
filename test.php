@@ -34,5 +34,31 @@
     <input type="submit" value="Create Folder">
 </form>
 
+
+
+
+
+
+
+<?php
+$servername = "localhost";
+$user ="root";
+$pass = "";
+$dbname = "course-repository";
+$mysqli = new mysqli($servername, $user, $pass, $dbname);
+$teacherID = "16";
+$assignedCourses = "select * from `teacher-course` where teacher_ID = '".$teacherID."'";
+$executeCourses = mysqli_query($mysqli, $assignedCourses);
+
+if ($executeCourses) {
+  //echo "executed";
+while ($row = mysqli_fetch_array($executeCourses)) {
+    echo $row['teacher_ID']."<br>";
+    echo $row['course_ID']."<br>";
+    
+  }
+}
+?>
+
 </body>
 
