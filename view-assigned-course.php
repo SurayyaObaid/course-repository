@@ -15,6 +15,27 @@ $courseID = "";
 $tID="";
 $query = "select * from course where course_Code='".$course_Code."'";
 $query_run= mysqli_query($mysqli,$query);
+
+
+$assigned_ID="";
+$teacher_ID="";
+$course_ID=""; 
+$last_Updated_On=""; 
+$batch="";
+$session_ID="";
+$first_Quiz="";
+$second_Quiz="";
+$third_Quiz="";
+$first_Assignment="";
+$second_Assignment="";
+$third_Assignment=""; 
+$midterm="";
+$lab_Quiz="";
+$lab_Exam="";
+$lab_Manual="";
+$course_Tracking=""; 
+$final_Term="";
+$results="";
        
 while ($row= mysqli_fetch_assoc($query_run)) {
     $courseID = $row['Course_ID'];
@@ -50,16 +71,69 @@ while ($row= mysqli_fetch_assoc($query_run)) {
 <?php
 $t = "select * from teacher where user_Name = '".$_SESSION['user']."'";
 $executet = mysqli_query($mysqli,$t);
-while ($rowt= mysqli_fetch_assoc($query_run)) {
-	$tID = $rowt['Teacher_ID'];
-}
-echo "t: ".$t;
-$tc = "select * from `teacher-course` where course_Code = $code && teacher_ID = '".$tID."'";
-echo "tc: ".$tc;
+if ($executet) {
+	
+while ($rowt= mysqli_fetch_assoc($executet)) {
+	$tID = $rowt['teacher_ID'];
+}}
+$tc = "select * from `teacher-course` where `course_ID` = '".$courseID."' && `teacher_ID` = '".$tID."'";
+$executeteachercourse = mysqli_query($mysqli,$tc);
+if ($executeteachercourse) {
+
+	echo "true";
+while ($rowtc= mysqli_fetch_assoc($executeteachercourse)) {
+	echo 'here comes id:' .$rowtc['assigned_ID'];
+	$assigned_ID=$rowtc['assigned_ID'];
+	$teacher_ID=$rowtc['teacher_ID'];
+	$last_Updated_On=$rowtc['last_Updated_On'];
+	$batch=$rowtc['batch'];
+	$session_ID=$rowtc['session_ID'];
+	$first_Quiz=$rowtc['first_Quiz'];
+	$second_Quiz=$rowtc['second_Quiz'];
+	$third_Quiz=$rowtc['third_Quiz'];
+	$first_Assignment=$rowtc['first_Assignment'];
+	$second_Assignment=$rowtc['second_Assignment'];
+	$third_Assignment=$rowtc['third_Assignment'];
+	$midterm=$rowtc['midterm'];
+	$lab_Quiz=$rowtc['lab_Quiz'];
+	$lab_Exam=$rowtc['lab_Exam'];
+	$lab_Manual=$rowtc['lab_Manual'];
+	$course_Tracking=$rowtc['course_Tracking'];
+	$final_Term=$rowtc['final_Term'];
+	$results=$rowtc['result'];
+echo $teacher_ID;
+echo $last_Updated_On;
+echo $batch;
+echo $session_ID;
+echo $first_Quiz;
+echo $second_Quiz;
+echo $third_Quiz;
+echo $first_Assignment;
+echo $second_Assignment;
+echo $third_Assignment;
+echo $midterm;
+echo $lab_Quiz;
+echo $lab_Exam;
+echo $lab_Manual;
+echo $course_Tracking;
+echo $results;
+
+
+	
 ?>
  <tr>
     <td style="width: 15%;">Quiz</td>
     <td>
+
+    	<?php
+
+
+}
+}
+else{
+	echo "false";
+}
+    	?>
     Quiz 1<input type="file" required="required" name="quiz1" accept=".docx" />  
     Quiz 2<input type="file" required="required" name="quiz2" accept=".docx"/>
     Quiz 3<input type="file" required="required" name="quiz3" accept=".docx"/></td>    
@@ -74,25 +148,25 @@ echo "tc: ".$tc;
 
   <tr>
     <td style="width: 15%;">Mid Term</td>
-    <td><input type="file"  required="required" name="midterm" accept=".pdf" /></td></tr> 
+    <td><input type="file"  required="required" name="midterm" accept=".pdf" /><?php echo $midterm; ?></td></tr> 
     <tr>
     <td style="width: 15%;">Final Term</td>
-    <td><input type="file" required="required" name="finalterm" accept=".pdf"  /> </td></tr> 
+    <td><input type="file" required="required" name="finalterm" accept=".pdf"  /><?php echo $final_Term; ?></td></tr> 
     <tr>
     <td style="width: 15%;">Lab Quiz</td>
-    <td><input type="file" required="required" name="labquiz" accept=".pdf" /> </td></tr> 
+    <td><input type="file" required="required" name="labquiz" accept=".pdf" /><?php echo $lab_Quiz; ?></td></tr> 
     <tr>
     <td style="width: 15%;">Lab Exam</td>
-    <td><input type="file" required="required" name="labexam"accept=".pdf"  /> </td></tr> 
+    <td><input type="file" required="required" name="labexam"accept=".pdf"  /><?php echo $lab_Exam; ?></td></tr> 
     <tr>
     <td style="width: 15%;">Lab Manual</td>
-    <td><input type="file" required="required" name="labmanual" accept=".pdf"  /> </td></tr> 
+    <td><input type="file" required="required" name="labmanual" accept=".pdf"  /><?php echo $lab_Manual; ?></td></tr> 
     <tr>
     <td style="width: 15%;">Course Tracking</td>
-    <td><input type="file" required="required" name="coursetracking" accept=".pdf"  /> </td></tr> 
+    <td><input type="file" required="required" name="coursetracking" accept=".pdf"  /><?php $course_Tracking; ?></td></tr> 
     <tr>
     <td style="width: 15%;">Results</td>
-    <td><input type="file" required="required" name="results" accept=".pdf, .xlsx"  /> </td></tr> 
+    <td><input type="file" required="required" name="results" accept=".pdf, .xlsx"  /><?php echo $results; ?></td></tr> 
   </table>
      <a href="view-assigned-course.php?<?php echo $code; ?>"> <input type="submit" required="required" class="btn btn-dark bg-dark" name="update_course" value="Update Course"></a>
 

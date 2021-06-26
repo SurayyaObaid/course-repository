@@ -1,7 +1,7 @@
 <?php
+
 include 'header.php';
 include 'config.php';
-session_start();
 
 $courses = "select * from course where status = 0";
 $executec  = mysqli_query($mysqli, $courses);
@@ -14,14 +14,9 @@ $executeb  = mysqli_query($mysqli, $batchesb);
 
 $teacher = "select * from teacher";
 $executet  = mysqli_query($mysqli, $teacher);
-$program = "";
-$year = "";
-$courseID="";
-$code="";
-$scourse="";
+$fetchtitle = "";
+$fetchcode="";
 ?>
-
-
 <!DOCTYPE html>
 <html>
 <head><meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -34,7 +29,7 @@ $scourse="";
     <h2 >Course Enrollment</h2>
   </div>
    
-  <form method="post" class="w-50 justify-content-center" enctype="multipart/form-data" action="course_enrolment.php">
+  <form method="post" class="w-50 justify-content-center" enctype="multipart/form-data" action="TeacherCourse.php">
     <center>
     
     <div class="input-group">
@@ -45,7 +40,6 @@ $scourse="";
         if ($executec) {
           while ($row = mysqli_fetch_array($executec)) {
             $courseTitle = $row['course_Title'];
-            $code = $row['course_Code'];
             echo "<option>$courseTitle<br></option>";
           }
         }
@@ -87,19 +81,19 @@ $scourse="";
          ?>
        
       </select>
-      
-    
+       <div class="input-group justify-content-center">
+       <input type="submit" class="btn br p-4 bg-dark text-light w-50" name="enrol_course" value="Assign Course" >
+           
 
-<?php
+ <?php
 if(isset($_POST['enrol_course'])){
     $scourse = $_POST['selected-course'];
     $steacher = $_POST['selected-teacher'];
     $sbatch = $_POST['selected-batch'];
-    echo "string". $scourse.$steacher. $sbatch;
+    //echo "string". $scourse . $steacher . $sbatch;
     if ($scourse == "" || $steacher == "" || $sbatch =="") {
       echo "Incomplete information!";
     }
-    
     $fetchFaculty = "select * from teacher where user_Name ='".$steacher."'";
     $executeft  = mysqli_query($mysqli, $fetchFaculty);
     if ($executeft) {
@@ -111,10 +105,12 @@ if(isset($_POST['enrol_course'])){
     
     $fetchCourse = "select * from course where course_Title = '".$scourse."'";
     $executefc  = mysqli_query($mysqli, $fetchCourse);
-    if ($executefc) {
+   if ($executefc) { 
         
           while ($row = mysqli_fetch_array($executefc)) {
             $courseID = $row['Course_ID'];
+            $fetchcode = $row['course_Code'];
+            $fetchtitle = $row['course_Title'];
             //echo "course ID: ".$courseID;
           }}
     $fetchBatch = "select * from batch where year = '".$year."' && degree_Program = '".$program."'";
@@ -124,30 +120,21 @@ if(isset($_POST['enrol_course'])){
             $batchID = $row['Batch_ID'];
             //echo "batch ID: ".$batchID;
           }}
-    
-  ?>
-
-
-  <?php  
-    
-$insert = "insert into `teacher-course` ( `teacher_ID`, `course_ID`, `batch`, `session_ID`) VALUES ('$teacherID', '$courseID', '$batchID', '6')";
+  $insert = "insert into `teacher-course` ( `teacher_ID`, `course_ID`, `batch`, `session_ID`) VALUES ('$teacherID', '$courseID', '$batchID', '6')";
 $execute  = mysqli_query($mysqli, $insert);
-echo "string ".$insert;
 $updatecourse = "update course set status = 1 where course_ID = '".$courseID."'";
 $executeuc = mysqli_query($mysqli, $updatecourse);
+$folder_name = $fetchtitle;
             if (!file_exists($output_dir.$folder_name))/* Check folder exists or not */
       {
         @mkdir($output_dir.$folder_name, 0777);/* Create folder by using mkdir function */
               echo "Folder Created";/* Success Message */
-      }}
+      }
+    
+    }
 
-?>
 
-<div class="input-group justify-content-center">
-      <a class="btn btn-dark bg-dark" href="edit-assigned-course.php?course_Code=<?php echo $code; ?>">
-      <input type="submit" class="bg-dark " name="enrol_course" value="Enrol Course" ></a>
-    </div>  
-  </div>
-    </div>
-</body>
-</html>
+
+ ?>
+ <a class="btn btn-dark text-light w-50 bg-dark" href="view-assigned-course.php?course_Code=<?php echo $fetchcode; ?>">Edit Assigned Course</a>
+      </div>  

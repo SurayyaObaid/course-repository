@@ -1,5 +1,5 @@
 <?php
-include 'header.php';
+//include 'header.php';
 include 'config.php';
 session_start();
 
@@ -17,8 +17,7 @@ $executet  = mysqli_query($mysqli, $teacher);
 $program = "";
 $year = "";
 $courseID="";
-$code="";
-$scourse="";
+$coursecode="";
 ?>
 
 
@@ -45,7 +44,6 @@ $scourse="";
         if ($executec) {
           while ($row = mysqli_fetch_array($executec)) {
             $courseTitle = $row['course_Title'];
-            $code = $row['course_Code'];
             echo "<option>$courseTitle<br></option>";
           }
         }
@@ -95,7 +93,6 @@ if(isset($_POST['enrol_course'])){
     $scourse = $_POST['selected-course'];
     $steacher = $_POST['selected-teacher'];
     $sbatch = $_POST['selected-batch'];
-    echo "string". $scourse.$steacher. $sbatch;
     if ($scourse == "" || $steacher == "" || $sbatch =="") {
       echo "Incomplete information!";
     }
@@ -113,41 +110,25 @@ if(isset($_POST['enrol_course'])){
     $executefc  = mysqli_query($mysqli, $fetchCourse);
     if ($executefc) {
         
-          while ($row = mysqli_fetch_array($executefc)) {
-            $courseID = $row['Course_ID'];
-            //echo "course ID: ".$courseID;
+          while ($newrow = mysqli_fetch_array($executefc)) {
+            $courseID = $newrow['Course_ID'];
+            $coursecode = $newrow['course_Code'];
           }}
-    $fetchBatch = "select * from batch where year = '".$year."' && degree_Program = '".$program."'";
-   $executefb  = mysqli_query($mysqli, $fetchBatch);
+  $fetchBatch = "select * from batch where year = '".$year."' && degree_Program = '".$program."'";
+  $executefb  = mysqli_query($mysqli, $fetchBatch);
     if ($executefb) {
           while ($row = mysqli_fetch_array($executefb)) {
             $batchID = $row['Batch_ID'];
             //echo "batch ID: ".$batchID;
-          }}
-    
-  ?>
-
-
-  <?php  
-    
-$insert = "insert into `teacher-course` ( `teacher_ID`, `course_ID`, `batch`, `session_ID`) VALUES ('$teacherID', '$courseID', '$batchID', '6')";
-$execute  = mysqli_query($mysqli, $insert);
-echo "string ".$insert;
-$updatecourse = "update course set status = 1 where course_ID = '".$courseID."'";
-$executeuc = mysqli_query($mysqli, $updatecourse);
-            if (!file_exists($output_dir.$folder_name))/* Check folder exists or not */
-      {
-        @mkdir($output_dir.$folder_name, 0777);/* Create folder by using mkdir function */
-              echo "Folder Created";/* Success Message */
-      }}
-
+          }}}
 ?>
-
-<div class="input-group justify-content-center">
-      <a class="btn btn-dark bg-dark" href="edit-assigned-course.php?course_Code=<?php echo $code; ?>">
-      <input type="submit" class="bg-dark " name="enrol_course" value="Enrol Course" ></a>
+  
+    <div class="input-group justify-content-center">
+       <a class="btn btn-dark bg-dark" href="view-assigned-course.php<?php echo $coursecode; ?>">
+      <input type="submit" class="bg-dark " name="enrol_course" value="Assign Course" ></a>
     </div>  
+
   </div>
     </div>
 </body>
-</html>
+</html> 
