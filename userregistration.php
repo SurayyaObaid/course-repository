@@ -6,6 +6,7 @@
   <link rel="stylesheet" type="text/css" href="css/register.css">
 <?php
 include 'header.php';
+include 'config.php';
 $name = "";
 if(isset($_POST['reg_user'])){
     $error = NULL;
@@ -17,11 +18,6 @@ if(isset($_POST['reg_user'])){
     
     
     //checking existing email
-        $servername = "localhost";
-        $user ="root";
-        $pass = "";
-        $dbname = "course-repository";
-        $mysqli = new mysqli($servername, $user, $pass, $dbname);
         $checkuser = "select user_Name from teacher where user_Name = '$name'";
         $result = mysqli_query($mysqli, $checkuser);
         $numOfRows = mysqli_num_rows($result);
@@ -60,13 +56,7 @@ if(isset($_POST['reg_user'])){
         
         $insert = $mysqli->query("INSERT INTO teacher (User_name, password, teacher_Designation) values ('$username','$password', '$designation')");
         if($insert){
-          $folder_name=$name;
-            if (!file_exists($output_dir . $folder_name))/* Check folder exists or not */
-      {
-        @mkdir($output_dir . $folder_name, 0777);/* Create folder by using mkdir function */
-              echo "Folder Created";/* Success Message */
-             
-      }
+          
            header('location:userlogin.php');
            
         }

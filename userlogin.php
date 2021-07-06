@@ -1,5 +1,6 @@
 <?php
 include 'header.php';
+include 'config.php';
 if(isset($_POST['login_user'])){
      $error = NULL;
     $usercount = 0;
@@ -10,14 +11,9 @@ if(isset($_POST['login_user'])){
     }
     else{
             //checking email
-        $servername = "localhost";
-        $user ="root";
-        $pass = "";
-        $dbname = "course-repository";
-        $database = new mysqli($servername, $user, $pass, $dbname);
-      
+        
         $checkuser = "select * from teacher where user_Name = '$username'";
-        $result = mysqli_query($database, $checkuser);
+        $result = mysqli_query($mysqli, $checkuser);
         $numOfRows = mysqli_num_rows($result);
         if($numOfRows > 0){
             while ($row= mysqli_fetch_array($result)) {

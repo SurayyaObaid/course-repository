@@ -69,7 +69,8 @@ $fetchcode="";
     </div><br>
     <div class="input-group">
       <label>Select Teacher</label><br><br>
-      <select class="bg-light border border-dark col-lg-11 rounded" required="required" name="selected-teacher">
+      <center><br><br>
+      <select style="float: left;" class="bg-light border border-dark col-lg-11 rounded" required="required" name="selected-teacher">
          <option></option>
         <?php 
         if ($executec) {
@@ -81,8 +82,8 @@ $fetchcode="";
          ?>
        
       </select>
-       <div class="input-group justify-content-center">
-       <input type="submit" class="btn br p-4 bg-dark text-light w-50" name="enrol_course" value="Assign Course" >
+       <div class="input-group justify-content-center pt-4">
+       <input type="submit" class="btn bg-dark text-light" style="padding: 10px; height: 40px; width: 300px; margin-left: -40px;" name="enrol_course" value="Assign Course" >
            
 
  <?php
@@ -136,5 +137,5 @@ $folder_name = $fetchtitle;
 
 
  ?>
- <a class="btn btn-dark text-light w-50 bg-dark" href="view-assigned-course.php?course_Code=<?php echo $fetchcode; ?>">Edit Assigned Course</a>
-      </div>  
+ 
+      </div>  </center>

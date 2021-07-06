@@ -15,13 +15,14 @@ $mysqli = new mysqli($servername, $user, $pass, $dbname);
      
 ?>
 <!DOCTYPE html>
-  <div id="layoutSidenav_content ">
-                <main>
-                    <div class="container-fluid">
+  <center>
+
+               <main style="margin-left: 220px;">
+                    <div class="container-fluid justify-content-center">
                        <main>
-                    <div class="container-fluid" style=" margin-left: 60px; margin-top: 80px;">
-                       <h1 class="mt-4">Courses</h1>
-                        <a href="addcourse.php" class="btn btn-dark col-lg-2" name="submit" style="float: right; margin-right: 120px;">Add courses</a><br><br>
+                    <div class="container-fluid" style=" margin-left: 180px; margin-top: 80px;">
+                      <h1 class="mt-4" style="float: left; margin-left: 380px;">My Courses</h1><br><br><br><br>
+                        
                        <div class="row">
                             <div class="card mb-4">
                             <div class="card-header">
@@ -36,13 +37,14 @@ $mysqli = new mysqli($servername, $user, $pass, $dbname);
                                                 <th>Serial No.</th>
                                                 <th>Course Code</th>
                                                 <th>Course Title</th>
-                                                <th>Assigned to</th>
-                                                <th>Last Modified</th>
+                                               <th>Last Modified</th>
+                                               <th class="justify-content-center"><center>Actions</center></th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                              <tr>
                                             <?php
+                                            $count = 1;
                                             $teacherID ="";
                                              //'".$courseID."'
                                             $loggedteacher = "select * from teacher where user_Name  = '".$_SESSION['user']."' ";
@@ -52,7 +54,7 @@ $mysqli = new mysqli($servername, $user, $pass, $dbname);
                                             $teacherID = $rowt['teacher_ID'];
                                             $assignedCourses = "select * from `teacher-course` where teacher_ID ='".$teacherID."'";
                                             $executeCourses = mysqli_query($mysqli, $assignedCourses);
-                                            echo $assignedCourses;
+                                            //echo $assignedCourses;
                                             if ($executeCourses) {
                                             while ($row = mysqli_fetch_array($executeCourses)) {        
                                                     //'".$courseID."'
@@ -60,14 +62,14 @@ $mysqli = new mysqli($servername, $user, $pass, $dbname);
                                                     $executeFC = mysqli_query($mysqli, $fetchcourses);
                                                     while ($rowfc = mysqli_fetch_array($executeFC)) {
                                                     ?>
-                                                <td><?php $count = 1; echo $count; $count++; ?></td>
+                                                <td><?php echo $count; $count++; ?></td>
                                                 <td><?php echo $rowfc['course_Code']; ?></td>
                                                 <td><?php echo $rowfc['course_Title']; ?></td>
-                                                <td><?php echo $rowt['user_Name']; ?></td>
                                                 <td><?php echo $row['last_Updated_On']; ?></td>
+                                                <td><a href="display-course.php?Course_ID=<?php echo $row['course_ID'];?>">View Course</a> &nbsp &nbsp
+                                                <a href="edit-assigned-course.php?course_Code=<?php echo $rowfc['course_Code'];?>">Edit Course</a></td>
                                             </tr>
-                                           </tbody>
-                                    </table>
+                                           
                                     <?php
 } //while course 
 } //if ($executeCourses)
@@ -77,14 +79,15 @@ else{
 };
 } //while for teachers
 ?>
+</tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>
                         </div>
                     </div>
                 </main>
-            </div>
-        </div>
+        </div></center>
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" crossorigin="anonymous"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
         <script src="js/scripts.js"></script>

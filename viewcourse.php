@@ -1,11 +1,6 @@
 <?php
 include 'header.php';
 include 'config.php';
-$servername = "localhost";
-$user ="root";
-$pass = "";
-$dbname = "course-repository";
-$mysqli = new mysqli($servername, $user, $pass, $dbname);
 
 //$query= "select * from plant where Plant_ID='".$Plant_ID."'";
 $courseID = $_GET['course_Code'];

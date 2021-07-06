@@ -35,16 +35,16 @@
         <nav class="navbar navbar-expand-lg navbar-light text-dark fixed-top py-3" id="mainNav" style="background-color: white;">
             <div class="container">
               <img class="fixed" src="img/JWU_Logo.jpg" height="54px" width="54px" alt="" style="margin-left: -25px; margin-right: 40px;">
-                <a class="navbar-brand js-scroll-trigger" href="adminhome.php"><solid style="color:black;">Course Repository</solid></a><button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+                <a class="navbar-brand js-scroll-trigger" href="adminhome.php"><solid style="color:black;font-size:x-large;">Course Repository</solid></a><button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
                 <div class="collapse navbar-collapse" id="navbarResponsive">
                     <ul class="navbar-nav ml-auto my-2 my-lg-0">
-                       <li class="nav-item"><a class="nav-link js-scroll-trigger" href="adminhome.php"><solid style="color: black;">Courses</solid></a></li>  
-                        <li class="nav-item"><a class="nav-link js-scroll-trigger" href="userlogin.php"><solid style="color: black;"> <?php 
+                       <li class="nav-item"><a class="nav-link js-scroll-trigger" href="adminhome.php"><solid style="color: black;font-size:initial">Courses</solid></a></li>  
+                        <li class="nav-item"><a class="nav-link js-scroll-trigger" href="userlogin.php"><solid style="color: black;font-size:initial"> <?php 
                             session_start();
                             if (!empty($_SESSION['user'])){
                                 echo "Welcome  " . $_SESSION['user'] . "!";
                                 ?>
-                                <li class="nav-item"><a class="nav-link js-scroll-trigger" style="color: black;" href="logout.php" onclick=" return confirm('Are you sure you want to logout') ">Logout</a></li>
+                                <li class="nav-item"><a class="nav-link js-scroll-trigger" style="color: black; font-size:initial" href="logout.php" onclick=" return confirm('Are you sure you want to logout') ">Logout</a></li>
                                 
                                 <?php
                             } else {

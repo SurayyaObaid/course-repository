@@ -1,10 +1,5 @@
 <?php
-
-$servername = "localhost";
-$user ="root";
-$pass = "";
-$dbname = "course-repository";
-$mysqli = new mysqli($servername, $user, $pass, $dbname);
+include 'config.php';
 $id=52;
  $filename = $_GET['course_ID'];
     // fetch file to download from database

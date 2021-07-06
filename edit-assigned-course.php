@@ -1,11 +1,6 @@
 <?php
 include 'header.php';
 include 'config.php';
-$servername = "localhost";
-$user ="root";
-$pass = "";
-$dbname = "course-repository";
-$mysqli = new mysqli($servername, $user, $pass, $dbname);
 
 //$query= "select * from plant where Plant_ID='".$Plant_ID."'";
 $course_Code = $_GET['course_Code'];
@@ -25,10 +20,10 @@ while ($row= mysqli_fetch_assoc($query_run)) {
     
 ?>
 <body style="justify-content: center; padding-left: 80px; margin-top: 100px;">
-<hr class="m-4" style="width: 90%; margin-top: 100px; align-content: center; ">
-  <div class="container col-lg-11 m-3 ml-4">
+ <div class="container col-lg-11 m-3 ml-4">
 
     <h3>Course Information</h3>
+    
   <table class="table table-striped">
     <tr>
     <td style="width: 15%;">Course Title</td>

@@ -7,11 +7,6 @@ echo "<script type='text/javascript'>
  </script>";"";
  header('location:userlogin.php');
 }
-$servername = "localhost";
-$user ="root";
-$pass = "";
-$dbname = "course-repository";
-$mysqli = new mysqli($servername, $user, $pass, $dbname);
 
 //for update
 $user = $_SESSION['user'];

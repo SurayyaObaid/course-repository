@@ -1,103 +1,192 @@
 <?php
 include 'header.php';
-$servername = "localhost";
-$user ="root";
-$pass = "";
-$dbname = "course-repository";
-$mysqli = new mysqli($servername, $user, $pass, $dbname);
-$teacher = "select * from teacher where user_Name = '".$_SESSION['user']."'";
+include 'config.php';
+$a = 22;
+$b = $_GET['Course_ID'];
+//$b = 45;
 $teacherID = "";
-$teacher_run= mysqli_query($mysqli, $teacher);
-while ($row= mysqli_fetch_assoc($teacher_run)) {
-    $teacherID = $row['teacher_ID'];
+$courseID = "";
+$title = "";
+$teacher = "";
+$credit = "";
+$batch = "";
+$assignedcourse = "";
+
+$fetchteacher = "select * from teacher where user_Name = '".$_SESSION['user']."'";
+$runft = mysqli_query($mysqli,$fetchteacher);
+while ($rowft = mysqli_fetch_array($runft)) {
+    $teacherID = $rowft['teacher_ID'];
+    $teacher = $rowft['user_Name'];
 }
-//$query= "select * from plant where Plant_ID='".$Plant_ID."'";
-$course_Code = $_GET['course_Code'];
-$query = "select * from course where course_Code='".$course_Code."'";
-$query_run= mysqli_query($mysqli,$query);
-       
-while ($row= mysqli_fetch_assoc($query_run)) {
-    $courseID = $row['Course_ID'];
-    $code = $row['course_Code'];
-    $title = $row['course_Title'];
-    $finaloutlinestring = $row['course_Outline'];
-    $credit = $row['creadit_Hours'];
-    $coursetitle = $row['course_Title'];
+
+$fetchassignedcourse = "select * from `teacher-course` where teacher_ID = '".$teacherID."' && course_ID ='".$b."'";
+$run = mysqli_query($mysqli,$fetchassignedcourse);
+while ($rowafc = mysqli_fetch_array($run)) {
+    print_r($rowafc) ;
+    $assignedcourse = $rowafc['assigned_ID'];
+    $batchID = $rowafc['batch'];
+    $fetchbatch = "select * from batch where Batch_ID= '".$batchID."'";
+    $runfb = mysqli_query($mysqli, $fetchbatch);
+    while ($rowfb = mysqli_fetch_array($runfb)) {
+        $batch = $rowfb['degree_Program']." ".$rowfb['year'];
+    }
+
+$fetchcourse = "select * from course where course_ID = '".$b."'";
+$runfc = mysqli_query($mysqli,$fetchcourse);
+while ($rowfc = mysqli_fetch_array($runfc)) {
+    $courseID = $rowfc['Course_ID'];
+    $title = $rowfc['course_Title'];
+    $credit = $rowfc['creadit_Hours'];
+
 ?>
-<body style="justify-content: center; padding-left: 80px; margin-top: 100px;">
+<body style="justify-content: center; padding-left: 80px; margin-top: 10px;">
 <hr class="m-4" style="width: 90%; margin-top: 100px; align-content: center; ">
   <div class="container col-lg-11 m-3 ml-4">
 
-    <h3>Course Information</h3>
+    
+   <div class="row col-lg-12"> 
+    <h3>Course Information</h3>&nbsp &nbsp &nbsp
+    <a href="edit-assigned-course.php?course_Code=<?php echo $rowfc['course_Code'];?>"><img href="edit-assigned-course.php?course_Code=<?php echo $rowfc['course_Code'];?>" src="img/edit.png" style="width: 25px; height: 25px;"></a></div>
+<?php } ?>
   <table class="table table-striped">
     <tr>
     <td style="width: 15%;">Course Title</td>
     <td><?php echo $title;?></td>
-</tr>
-<tr>
-    <td style="width: 8%;">Course Code</td>
-    <td><?php echo $code; ?></td>
-  </tr>
-    <td style="width: 8%;">Credit Hours</td>
-  <td><?php echo $credit; ?></td>
-
-<tr>
-    <td style="width: 15%;">Course Outline</td>
-    <td><?php echo $finaloutlinestring; ?></td></tr>    
-
-    <?php
-}
-$fetchCourse = "select * from `teacher-course` where `course_ID`='".$courseID."' && `teacher_ID` = '".$teacherID."' ";
-$course_run= mysqli_query($mysqli,$fetchCourse);
-
-
-while ($rowcs= mysqli_fetch_assoc($course_run)) {
-
-    ?>
- 
- <tr>
-    <td style="width: 15%;">Quiz</td>
-    <td>
-    Quiz 1<input type="file" required="required" value="<?php echo $rowcs['first_Quiz']; ?>" name="quiz1" accept=".docx" />  
-    Quiz 2<input type="file" required="required" value="<?php echo $rowcs['second_Quiz']; ?>" name="quiz2" accept=".docx"/>
-    Quiz 3<input type="file" required="required" value="<?php echo $rowcs['three_Quiz']; ?>" name="quiz3" accept=".docx"/></td>    
-  </tr>
-  <tr>
-    <td style="width: 15%;">Assignments</td>
-    <td>
-    Assignment 1<input type="file" required="required" value="<?php echo $rowcs['first_Assignment']; ?>" name="assignment1" accept=".docx"/>  
-    Assignment 2<input type="file" required="required" value="<?php echo $rowcs['second_Assignment']; ?>" name="assignment2" accept=".docx"/>
-    Assignment 3<input type="file" required="required" value="<?php echo $rowcs['third_Assignment']; ?>" name="assignment3" accept=".docx"/></td>    
-  </tr>
-
-  <tr>
-    <td style="width: 15%;">Mid Term</td>
-    <td><input type="file"  required="required" name="midterm" value="<?php echo $rowcs['midterm']; ?>" accept=".pdf" /></td></tr> 
+    </tr>
     <tr>
-    <td style="width: 15%;">Final Term</td>
-    <td><input type="file" required="required" name="finalterm" value="<?php echo $rowcs['final_Term']; ?>" accept=".pdf"  /> </td></tr> 
+    <td style="width: 15%;">Course Instructor</td>
+    <td><?php echo $teacher;?></td>
+    </tr>
+    <tr>
+    <td style="width: 15%;">Credit hours</td>
+    <td><?php echo $credit; ?></td>
+    </tr>
+    <tr>
+    <td style="width: 15%;">Batch</td>
+    <td><?php echo $batch;?></td>
+    </tr>
+    <tr>
+    <td style="width: 15%;">Quiz 1</td>
+    <td>
+        <?php 
+        if ($rowafc['first_Quiz'] == "") {
+            echo "File not uploaded";
+        }
+        echo $rowafc['first_Quiz'];?></td>
+    </tr>
+    <tr>
+    <td style="width: 15%;">Quiz 2</td>
+    <td>
+        <?php 
+        if ($rowafc['second_Quiz'] == "") {
+            echo "File not uploaded";
+        }
+        echo $rowafc['first_Quiz'];?>
+    </td>
+    </tr>
+    <tr>
+    <td style="width: 15%;">Quiz 3</td>
+    <td>
+        <?php 
+        if ($rowafc['third_Quiz'] == "") {
+            echo "File not uploaded";
+        }
+        echo $rowafc['third_Quiz'];?>
+    </td>
+    </tr>
+    <tr>
+    <td style="width: 15%;">Assignment 1</td>
+    <td>
+        <?php 
+        if ($rowafc['first_Assignment'] == "") {
+            echo "File not uploaded";
+        }
+        echo $rowafc['first_Assignment'];?>
+    </td>
+    </tr>
+    <tr>
+    <td style="width: 15%;">Assignment 2</td>
+    <td>
+        <?php 
+        if ($rowafc['second_Assignment'] == "") {
+            echo "File not uploaded";
+        }
+        echo $rowafc['second_Assignment'];?>
+    </td>
+    </tr>
+    <tr>
+    <td style="width: 15%;">Assignment 3</td>
+    <td>
+        <?php 
+        if ($rowafc['third_Assignment'] == "") {
+            echo "File not uploaded";
+        }
+        echo $rowafc['third_Assignment'];?>
+    </td>
+    </tr>
     <tr>
     <td style="width: 15%;">Lab Quiz</td>
-    <td><input type="file" required="required" name="labquiz" value="<?php echo $rowcs['lab_Quiz']; ?>" accept=".pdf" /> </td></tr> 
+    <td>
+        <?php 
+        if ($rowafc['lab_Quiz'] == "") {
+            echo "File not uploaded";
+        }
+        echo $rowafc['lab_Quiz'];?>
+    </td>
+    </tr>
     <tr>
-    <td style="width: 15%;">Lab Exam</td>
-    <td><input type="file" required="required" name="labexam" value="<?php echo $rowcs['lab_Exam']; ?>" accept=".pdf"  /> </td></tr> 
+    <td style="width: 15%;">Mid Term</td>
+    <td>
+        <?php 
+        if ($rowafc['midterm'] == "") {
+            echo "File not uploaded";
+        }
+        echo $rowafc['midterm'];?>
+    </td>
+    </tr>
     <tr>
-    <td style="width: 15%;">Lab Manual</td>
-    <td><input type="file" required="required" name="labmanual" value="<?php echo $rowcs['lab_Manual']; ?>" accept=".pdf"  /> </td></tr> 
+    <td style="width: 15%;">Final Term</td>
+    <td>
+        <?php 
+        if ($rowafc['final_Term'] == "") {
+            echo "File not uploaded";
+        }
+        echo $rowafc['final_Term'];?>
+    </td>
+    </tr>
+    <tr>
+    <td style="width: 15%;">Lab Manual  </td>
+    <td>
+        <?php 
+        if ($rowafc['lab_Manual'] == "") {
+            echo "File not uploaded";
+        }
+        echo $rowafc['lab_Manual'];?>
+    </td>
+    </tr>
     <tr>
     <td style="width: 15%;">Course Tracking</td>
-    <td><input type="file" required="required" name="coursetracking" value="<?php echo $rowcs['course_Tracking']; ?>" accept=".pdf"  /> </td></tr> 
+    <td>
+        <?php 
+        if ($rowafc['course_Tracking'] == "") {
+            echo "File not uploaded";
+        }
+        echo $rowafc['course_Tracking'];?>
+    </td>
+    </tr>
     <tr>
     <td style="width: 15%;">Results</td>
-    <td><input type="file" required="required" name="results" value="<?php echo $rowcs['result']; ?>" accept=".pdf, .xlsx"  /> </td></tr> 
-  </table>
-     <a href="view-enrolled-course.php?<?php echo $code; ?>"> <input type="submit" required="required" class="btn btn-dark bg-dark" name="update_course" value="Update Course"></a>
+    <td>
+        <?php 
+        if ($rowafc['result'] == "") {
+            echo "File not uploaded";
+        }
+        echo $rowafc['result'];?>
+    </td>
+    </tr>
+    
 
-  </div>
-  <?php
-
+<?php
 }
+
 ?>
-</body>
-</html> 
